@@ -31,6 +31,11 @@ def levenshtein(term, ref):
             if i==0 or j==0:
                res[i,j] = res[i,j] + i + j
             else:
-               # El mejor camino viene siempre dado por la diagonal
-               res[i,j] = mat[i-1,j-1] + res[i-1,j-1]
+               
+               res[i,j] =min(
+                  mat[i-1,j-1] + res[i-1,j-1],
+                  1 + res[i-1,j],
+                  1 + res[i,j-1]
+               )
+               
    return res[len(term),len(ref)]
