@@ -62,7 +62,28 @@ def dp_intermediate_damerau_backwards(x, y):
    """
    Calcula la distancia de Damerau Levenshtein no restringida entre las cadenas x y y, con cota de malla
    """
-   return 0 # reemplazar/completar
+   M = np.zeros((len(x) + 1, len(y) + 1))
+   for i in range(1, len(x) + 1):
+      M[i, 0] = i
+   for j in range(1, len(y) + 1):
+      M[0, j] = j
+   for i in range(1, len(x) + 1):
+        for j in range(1, len(y) + 1):
+            minInit = 0
+            if x[i - 1] == y[j - 1]:
+                minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
+            else:
+                minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1] + 1)
+
+            if j > 1 and i > 1 and x[i - 2] == y[j - 1] and x[i - 1] == y[j - 2]:
+                M[i,j] = min(minInit, M[i-2][j-2] + 1)
+            elif j > 2 and i > 1 and x[i-2] == y[j-1] and x[i-1] == y[j-3]:
+                M[i,j] = min(minInit, M[i-2][j-3] + 2)
+            elif i > 2 and j > 1 and x[i - 3] == y[j-1] and x[i-1] == y[j-2]:
+                M[i,j] = min(minInit, M[i-3][j-2] + 2)
+            else:
+                M[i,j] = minInit
+   return M[len(x), len(y)]
 
 def general_damerau_levenshtein(x,y):
    return 0 # reemplazar/completar
@@ -93,12 +114,9 @@ if TEST_MODULE_FLAG:
          print('Output: ',dp_restricted_damerau_backwards(x,y))
          print('Expected: ', sol2)
 
-      """
-      VICTOR ES UN LENTO Y AUN NO LO HA HECHO :(
       try:
          assert(dp_intermediate_damerau_backwards(x,y),sol3)
       except AssertionError:
          print('Levenshtein failed in x -> ',x,' , y -> ',y)
          print('Output: ',dp_intermediate_damerau_backwards(x,y))
          print('Expected: ', sol3)
-      """

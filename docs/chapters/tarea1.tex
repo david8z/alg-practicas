@@ -1,0 +1,113 @@
+\section{Distancias de edición}
+Implementaión de distancias de edición entre cadenas de forma iterativa y mediante programación dinámica
+
+\subsection{Distancia de Levensthtein}
+Considerando las operaciones de inserción, borrado y sustitución con coste=1.
+
+\begin{lstlisting}[caption=Algoritmo distancia de levenshtein]
+    mat = matriz(x, y)
+    res = np.zeros(shape=(len(x)+1,len(y)+1))
+    for i in range(0,len(x)+1):
+      for j in range(0,len(y)+1):
+            if i==0 or j==0:
+               res[i,j] = res[i,j] + i + j
+            else:
+               res[i,j] =min(
+                  mat[i-1,j-1] + res[i-1,j-1],
+                  1 + res[i-1,j],
+                  1 + res[i,j-1]
+               )
+               
+    return res[len(x),len(y)]
+\end{lstlisting}
+
+
+\subsection{Distancia de Damerau-Levensthtein restringida}
+
+\begin{lstlisting}[label={list:first},caption=Sample Python code -- Damerau-Levensthtein restringido]
+    INF = len(x) + len(y)
+
+    mat = matriz(x, y)
+    res = np.zeros(shape=(len(x)+1,len(y)+1))
+
+    for i in range(0,len(x)+1):
+      for j in range(0,len(y)+1):
+            if i==0 or j==0:
+               res[i,j] = res[i,j] + i + j
+            elif i == 1 or j == 1:
+               res[i,j] =min(
+                  mat[i-1,j-1] + res[i-1,j-1],
+                  1 + res[i-1,j],
+                  1 + res[i,j-1],
+               )
+            else:
+               res[i,j] =min(
+                  mat[i-1,j-1] + res[i-1,j-1],
+                  1 + res[i-1,j],
+                  1 + res[i,j-1],
+                  1 + res[i-2,j-2] + (mat[i-2,j-1] + mat[i-1,j-2]) * INF
+               )
+    return res[len(x),len(y)]
+\end{lstlisting}
+
+\vfill
+\subsection{Distancia de Damerau-Levensthtein intermedia}
+Considerando las operaciones de edición cuando:
+\begin{equation}
+    |u| + |v| 	\leqslant cte \Leftarrow cte = 1
+\end{equation}
+\begin{lstlisting}[label={list:first},caption=Damerau-Levensthtein intermedio]
+    M = np.zeros((len(x) + 1, len(y) + 1))
+    for i in range(1, len(x) + 1):
+      M[i, 0] = i
+    for j in range(1, len(y) + 1):
+      M[0, j] = j
+    for i in range(1, len(x) + 1):
+        for j in range(1, len(y) + 1):
+            minInit = 0
+            if x[i - 1] == y[j - 1]:
+                minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
+            else:
+                minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1] + 1)
+
+            if j > 1 and i > 1 and x[i - 2] == y[j - 1] and x[i - 1] == y[j - 2]:
+                M[i,j] = min(minInit, M[i-2][j-2] + 1)
+            elif j > 2 and i > 1 and x[i-2] == y[j-1] and x[i-1] == y[j-3]:
+                M[i,j] = min(minInit, M[i-2][j-3] + 2)
+            elif i > 2 and j > 1 and x[i - 3] == y[j-1] and x[i-1] == y[j-2]:
+                M[i,j] = min(minInit, M[i-3][j-2] + 2)
+            else:
+                M[i,j] = minInit
+    return M[len(x), len(y)]
+\end{lstlisting}
+
+\subsection{Distancia de Damerau-Levensthtein general}
+    Esta por hacer
+    \begin{lstlisting}[label={list:first},caption=Damerau-Levensthtein general]
+        M = np.zeros((len(x) + 1, len(y) + 1))
+        for i in range(1, len(x) + 1):
+          M[i, 0] = i
+        for j in range(1, len(y) + 1):
+          M[0, j] = j
+        for i in range(1, len(x) + 1):
+            for j in range(1, len(y) + 1):
+                minInit = 0
+                if x[i - 1] == y[j - 1]:
+                    minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
+                else:
+                    minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1] + 1)
+    
+                if j > 1 and i > 1 and x[i - 2] == y[j - 1] and x[i - 1] == y[j - 2]:
+                    M[i,j] = min(minInit, M[i-2][j-2] + 1)
+                elif j > 2 and i > 1 and x[i-2] == y[j-1] and x[i-1] == y[j-3]:
+                    M[i,j] = min(minInit, M[i-2][j-3] + 2)
+                elif i > 2 and j > 1 and x[i - 3] == y[j-1] and x[i-1] == y[j-2]:
+                    M[i,j] = min(minInit, M[i-3][j-2] + 2)
+                else:
+                    M[i,j] = minInit
+        return M[len(x), len(y)]
+\end{lstlisting}
+
+
+
+\newpage

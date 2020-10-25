@@ -1,0 +1,92 @@
+\documentclass[a4paper,11pt]{article}
+
+%% Language and font encodings
+\usepackage[spanish,english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%% Sets page size and margins
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2cm,right=2cm,marginparwidth=2cm]{geometry}
+%% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\setlength{\marginparwidth}{2cm}
+\usepackage{authblk}
+\usepackage[none]{hyphenat}
+
+\setlength{\parindent}{1em}
+\usepackage{indentfirst}
+\setlength{\parskip}{3pt}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+\renewcommand\familydefault{\sfdefault}
+\usepackage{tgheros}
+
+\usepackage{amsmath,amssymb,amsthm,textcomp}
+\usepackage{enumerate}
+\usepackage{multicol}
+\usepackage{tikz}
+
+\usepackage{geometry}
+\geometry{left=25mm,right=25mm,%
+bindingoffset=0mm, top=20mm,bottom=20mm}
+
+
+\linespread{1.3}
+
+\newcommand{\linia}{\rule{\linewidth}{0.5pt}}
+
+% code listing settings
+\usepackage{multicol}
+\usepackage{listings}
+\lstset{
+    language=Python,
+    basicstyle=\fontsize{7pt}{7pt}\ttfamily,
+    aboveskip={0.5\baselineskip},
+    belowskip={0.5\baselineskip},
+    extendedchars=true,
+    breaklines=true,
+    tabsize=2,
+    prebreak=\raisebox{0ex}[0ex][0ex]{\ensuremath{\hookleftarrow}},
+    frame=lines,
+    showtabs=false,
+    showspaces=false,
+    showstringspaces=false,
+    keywordstyle=\color[rgb]{0.627,0.126,0.941},
+    commentstyle=\color[rgb]{0.133,0.545,0.133},
+    stringstyle=\color[rgb]{01,0,0},
+    numbers=left,
+    numberstyle=\tiny,
+    stepnumber=1,
+    numbersep=10pt,
+    escapeinside={\%*}{*)},
+    frameround=ftff,
+    frame=single,
+}
+
+%%%----------%%%----------%%%----------%%%----------%%%
+
+\title{INFORME PROYECTO ALM}
+\author{}
+
+\begin{document}
+\graphicspath{./images/} 
+
+\input{chapters/portada.tex}
+
+{
+\hypersetup{linkcolor=black}
+\tableofcontents
+\newpage
+}
+
+\input{chapters/tarea1.tex}
+\input{chapters/tarea2.tex}
+\input{chapters/tarea3.tex}
+
+\end{document}
