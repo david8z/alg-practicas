@@ -4,7 +4,8 @@ TEST_MODULE_FLAG = True
 
 def matriz(x, y):
    """
-   Metodo dado en el boletin
+   Metodo dado en el boletin, matriz que contrasta dos palabras indicando con 0 si son 
+   el mismo caracter o con 1 si son diferentes
    """
    vy = np.array(list(y))
    return np.vstack([vy != letter for letter in x]) + 0
@@ -63,6 +64,10 @@ def dp_intermediate_damerau_backwards(x, y):
    Calcula la distancia de Damerau Levenshtein no restringida entre las cadenas x y y, con cota de malla
    """
    M = np.zeros((len(x) + 1, len(y) + 1))
+
+   # COMENTARIO DE DAVID: posible optimización usando numpy
+   # M[0] = np.arange(len(y)+1)
+   # M[:][:,0] = np.arange(len(x)+1)
    for i in range(1, len(x) + 1):
       M[i, 0] = i
    for j in range(1, len(y) + 1):
@@ -71,18 +76,18 @@ def dp_intermediate_damerau_backwards(x, y):
         for j in range(1, len(y) + 1):
             minInit = 0
             if x[i - 1] == y[j - 1]:
-                minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
+               minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
             else:
-                minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1] + 1)
+               minInit = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1] + 1)
 
             if j > 1 and i > 1 and x[i - 2] == y[j - 1] and x[i - 1] == y[j - 2]:
-                M[i,j] = min(minInit, M[i-2][j-2] + 1)
+               M[i,j] = min(minInit, M[i-2][j-2] + 1)
             elif j > 2 and i > 1 and x[i-2] == y[j-1] and x[i-1] == y[j-3]:
-                M[i,j] = min(minInit, M[i-2][j-3] + 2)
+               M[i,j] = min(minInit, M[i-2][j-3] + 2)
             elif i > 2 and j > 1 and x[i - 3] == y[j-1] and x[i-1] == y[j-2]:
-                M[i,j] = min(minInit, M[i-3][j-2] + 2)
+               M[i,j] = min(minInit, M[i-3][j-2] + 2)
             else:
-                M[i,j] = minInit
+               M[i,j] = minInit
    return M[len(x), len(y)]
 
 def general_damerau_levenshtein(x,y):
