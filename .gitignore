@@ -1,6 +1,10 @@
 #PYTHON
 *.pyc
 
+#LATEX
+docs/*
+!*.tex
+
 #ENV
 .vscode
 
