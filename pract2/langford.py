@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
+import argparse
 
 def langford_directo(N, allsolutions):
     N2   = 2*N
@@ -10,6 +11,18 @@ def langford_directo(N, allsolutions):
             yield "-".join(map(str, seq))
         else:
 	    # COMPLETAR
+            for i in range(0,len(seq)-(num + 1)):
+                # Si los dos estan sin usar en seq
+                # Debe ser +1 porque debe haber num espacios
+                if seq[i]==0 and seq[i+num+1]==0:
+                    seq[i]=num
+                    seq[i+num+1]=num
+                    for sol in backtracking(num-1):
+                        yield sol
+                    seq[i]=0
+                    seq[i+num+1]=0
+
+                    
 
     if N%4 not in (0,3):
         yield "no hay solucion"
@@ -87,21 +100,25 @@ def langford_exact_cover(N, allsolutions):
             if not allsolutions:
                 break
 
+
 if __name__ == "__main__":
-    if len(sys.argv) not in (2, 3, 4):
-        print('\nUsage: %s N [TODAS] [EXACT_COVER] \n' % (sys.argv[0],))
-        sys.exit()
-    try:
-        N = int(sys.argv[1])
-    except ValueError:
-        print('First argument must be an integer')
-        sys.exit()
-    allSolutions = False
-    langford_function = langford_directo
-    for param in sys.argv[2:]:
-        if param == 'TODAS':
-            allSolutions = True
-        elif param == 'EXACT_COVER':
-            langford_function = langford_exact_cover
-    for sol in langford_function(N, allSolutions):
+
+    parser = argparse.ArgumentParser()
+
+    #parser.add_argument()
+    #parser = argparse.ArgumentParser()
+
+    parser.add_argument("--N", default=7,type=int)
+    parser.add_argument("--todas", default=True,type=bool)
+    parser.add_argument("--mode", default='directo',type=str,choices=['directo','exact_cover'])
+
+    args = parser.parse_args()
+
+    if args.mode == 'directo':
+        langford_function = langford_directo
+
+    if args.mode == 'exact_cover':
+        langford_function = langford_exact_cover
+
+    for sol in langford_function(args.N, args.todas):
         print(sol)
