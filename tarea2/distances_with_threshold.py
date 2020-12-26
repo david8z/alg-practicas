@@ -11,7 +11,7 @@ def init_matriz(x, y):
    """
    Inicia la matriz para calculos con Damerau
    """
-   M = np.ones((len(x) + 1, len(y) + 1))**np.inf
+   M = np.ones((len(x) + 1, len(y) + 1)) * np.inf
 
    M[0] = np.arange(len(y)+1)
    M[:][:,0] = np.arange(len(x)+1)
@@ -61,38 +61,40 @@ def levenshtein_active_states(ref,term,threshold):
     return current[len(term)]
 
 def dp_intermediate_damerau_backwards_with_threshold(x, y, threshold):
-   """
-   Calcula la distancia de Damerau Levenshtein no restringida entre las cadenas x y y, con cota de malla
-   """
-   
-   M = init_matriz(x, y)
+    """
+    Calcula la distancia de Damerau Levenshtein no restringida entre las cadenas x y y, con cota de malla
 
-   for i in range(1, len(x) + 1):
+    """
+    
+    M = init_matriz(x, y)
 
-    # Tarea 2 punto 1 - Establecer límites en el recorrido para que solamente 
-    # se calculen aquellas partes del grafo de dependencias que tengan sentido para dicho umbral.
-    # Por ejemplo: zonas relativamente cercanas a la diagonal principal de la matriz.
-    lower_y = max(1, i - threshold)
-    upper_y = min(len(y) + 1, i + threshold)
+    for i in range(1, len(x) + 1):
+        print(M)
 
-    for j in range(lower_y, upper_y):
+        # Tarea 2 punto 1 - Establecer límites en el recorrido para que solamente 
+        # se calculen aquellas partes del grafo de dependencias que tengan sentido para dicho umbral.
+        # Por ejemplo: zonas relativamente cercanas a la diagonal principal de la matriz.
+        lower_y = max(1, i - threshold)
+        upper_y = min(len(y) + 1, i + threshold)
 
-        if x[i - 1] == y[j - 1]:
-            initActual = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
-        else:
-            initActual = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1] + 1)
+        for j in range(lower_y, upper_y):
 
-        if j > 1 and i > 1 and x[i - 2] == y[j - 1] and x[i - 1] == y[j - 2]:
-            M[i,j] = min(initActual, M[i-2][j-2] + 1)
-        elif j > 2 and i > 1 and x[i-2] == y[j-1] and x[i-1] == y[j-3]:
-            M[i,j] = min(initActual, M[i-2][j-3] + 2)
-        elif i > 2 and j > 1 and x[i - 3] == y[j-1] and x[i-1] == y[j-2]:
-            M[i,j] = min(initActual, M[i-3][j-2] + 2)
-        else:
-            M[i,j] = initActual
-        
-    # Tarea 2 punto 2 - Detener el algoritmo si, tras calcular una etapa 
-    # (fila o columna según sea tu algoritmo) se puede asegurar que el coste superará el umbral.
-    if min(M[:,j]) > threshold : return None
+            if x[i - 1] == y[j - 1]:
+                initActual = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
+            else:
+                initActual = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1] + 1)
 
-   return M[len(x), len(y)]
+            if j > 1 and i > 1 and x[i - 2] == y[j - 1] and x[i - 1] == y[j - 2]:
+                M[i,j] = min(initActual, M[i-2][j-2] + 1)
+            elif j > 2 and i > 1 and x[i-2] == y[j-1] and x[i-1] == y[j-3]:
+                M[i,j] = min(initActual, M[i-2][j-3] + 2)
+            elif i > 2 and j > 1 and x[i - 3] == y[j-1] and x[i-1] == y[j-2]:
+                M[i,j] = min(initActual, M[i-3][j-2] + 2)
+            else:
+                M[i,j] = initActual
+
+        # Tarea 2 punto 2 - Detener el algoritmo si, tras calcular una etapa 
+        # (fila o columna según sea tu algoritmo) se puede asegurar que el coste superará el umbral.
+        if min(M[:,j]) > threshold : return None
+    print(M)
+    return M[len(x), len(y)]

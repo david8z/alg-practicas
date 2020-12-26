@@ -14,7 +14,7 @@ def init_matriz(x, y):
    """
    Inicia la matriz para calculos con Damerau
    """
-   M = np.ones((len(x) + 1, len(y) + 1))**np.inf
+   M = np.ones((len(x) + 1, len(y) + 1)) * np.inf
 
    M[0] = np.arange(len(y)+1)
    M[:][:,0] = np.arange(len(x)+1)
