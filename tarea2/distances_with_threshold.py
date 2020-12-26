@@ -18,28 +18,50 @@ def init_matriz(x, y):
 
    return M
 
+# def dp_levenshtein_backwards_threshold(term, ref, threshold):
+#     """
+#     Calcula la distancia de Levenshtein entre las cadenas term y ref
+#     con un umbral maximo threshold
+#     """
+#     mat = matriz(term, ref)
+#     res = np.zeros(shape=(len(term)+1,len(ref)+1))
+#     for i in range(0,len(term)+1):
+#         for j in range(0,len(ref)+1):
+#             if i==0 or j==0:
+#                 res[i,j] = res[i,j] + i + j
+#             else:
+                
+#                 res[i,j] =min(
+#                     mat[i-1,j-1] + res[i-1,j-1],
+#                     1 + res[i-1,j],
+#                     1 + res[i,j-1]
+#                 )
+#                 if (res.diagonal() > threshold).any():
+#                     return None
+#     return res[len(term),len(ref)]
+
 def dp_levenshtein_backwards_threshold(term, ref, threshold):
     """
     Calcula la distancia de Levenshtein entre las cadenas term y ref
     con un umbral maximo threshold
     """
     mat = matriz(term, ref)
-    res = np.zeros(shape=(len(term)+1,len(ref)+1))
-    for i in range(0,len(term)+1):
-        for j in range(0,len(ref)+1):
-            if i==0 or j==0:
-                res[i,j] = res[i,j] + i + j
-            else:
-                
-                res[i,j] =min(
+    res = init_matriz(term, ref)
+    
+    for i in range(1, len(term) + 1):
+        print(res)
+        lower_y = max(1, i - threshold)
+        upper_y = min(len(ref) + 1, i + threshold)
+        for j in range(lower_y, upper_y):
+            res[i,j] =min(
                     mat[i-1,j-1] + res[i-1,j-1],
                     1 + res[i-1,j],
                     1 + res[i,j-1]
                 )
-                if (res.diagonal() > threshold).any():
-                    return None
+            print(res)
+            if min(res[:,j]) > threshold : return None
+    
     return res[len(term),len(ref)]
-
 
 def levenshtein_active_states(ref,term,threshold):
     mat = matriz(term,ref)
