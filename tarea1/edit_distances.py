@@ -79,21 +79,21 @@ def dp_intermediate_damerau_backwards(x, y):
    M = init_matriz(x, y)
 
    for i in range(1, len(x) + 1):
-        for j in range(1, len(y) + 1):
+      for j in range(1, len(y) + 1):
 
-            if x[i - 1] == y[j - 1]:
-               initActual = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
-            else:
-               initActual = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1] + 1)
+         if x[i - 1] == y[j - 1]:
+            initActual = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
+         else:
+            initActual = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1] + 1)
 
-            if j > 1 and i > 1 and x[i - 2] == y[j - 1] and x[i - 1] == y[j - 2]:
-               M[i,j] = min(initActual, M[i-2][j-2] + 1)
-            elif j > 2 and i > 1 and x[i-2] == y[j-1] and x[i-1] == y[j-3]:
-               M[i,j] = min(initActual, M[i-2][j-3] + 2)
-            elif i > 2 and j > 1 and x[i - 3] == y[j-1] and x[i-1] == y[j-2]:
-               M[i,j] = min(initActual, M[i-3][j-2] + 2)
-            else:
-               M[i,j] = initActual
+         if j > 1 and i > 1 and x[i - 2] == y[j - 1] and x[i - 1] == y[j - 2]:
+            M[i,j] = min(initActual, M[i-2][j-2] + 1)
+         elif j > 2 and i > 1 and x[i-2] == y[j-1] and x[i-1] == y[j-3]:
+            M[i,j] = min(initActual, M[i-2][j-3] + 2)
+         elif i > 2 and j > 1 and x[i - 3] == y[j-1] and x[i-1] == y[j-2]:
+            M[i,j] = min(initActual, M[i-3][j-2] + 2)
+         else:
+            M[i,j] = initActual
 
    return M[len(x), len(y)]
 
