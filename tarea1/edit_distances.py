@@ -11,15 +11,15 @@ def matriz(x, y):
     return np.vstack([vy != letter for letter in x]) + 0
 
 def init_matriz(x, y):
-    """
-    Inicia la matriz para calculos con Damerau
-    """
-    M = np.ones((len(x) + 1, len(y) + 1)) * np.inf
+   """
+   Inicia la matriz para calculos con Damerau
+   """
+   matriz = np.ones((len(x) + 1, len(y) + 1)) * np.inf
 
-    M[0] = np.arange(len(y)+1)
-    M[:][:,0] = np.arange(len(x)+1)
+   matriz[0] = np.arange(len(y)+1)
+   matriz[:][:,0] = np.arange(len(x)+1)
 
-    return M
+   return matriz
 
 
 def dp_levenshtein_backwards(x, y):
@@ -99,7 +99,51 @@ def dp_intermediate_damerau_backwards(x, y):
     return M[len(x), len(y)]
 
 def general_damerau_levenshtein(x,y):
-    return 0 # reemplazar/completar
+   return 0 # reemplazar/completar
+
+    
+   mat = init_matriz(x, y)
+
+   last_row = {}
+
+   # Fill in costs
+   for row in range(1, len(x) ):
+      # Current character in `a`
+      ch_a = x[row-1]
+
+      # Column of last match on this row: `DB` in pseudocode
+      last_match_col = 0
+
+      for col in range(1, len(y) ):
+         # Current character in `b`
+         ch_b = y[col-1]
+
+         # Last row with matching character; `i1` in pseudocode
+         last_matching_row = last_row.get(ch_b, 0)
+
+         # Cost of substitution
+         cost = 0 if ch_a == ch_b else 1
+
+         # Compute substring distance
+         mat[row+1][col+1] = min(
+               mat[row][col] + cost, # Substitution
+               mat[row+1][col] + 1,  # Addition
+               mat[row][col+1] + 1,  # Deletion
+               # Transposition
+               mat[last_matching_row][last_match_col]
+                  + (row - last_matching_row - 1) + 1
+                  + (col - last_match_col - 1))
+
+         # If there was a match, update last_match_col
+         # Doing this here lets me be rid of the `j1` variable from the original pseudocode
+         if cost == 0:
+            last_match_col = col
+
+      # Update last row for current character
+      last_row[ch_a] = row
+
+   # Return last element
+   return mat[-1][-1]
 
 # TEST MODULE
 if TEST_MODULE_FLAG:

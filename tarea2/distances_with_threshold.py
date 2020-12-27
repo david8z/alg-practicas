@@ -134,8 +134,11 @@ def dp_intermediate_damerau_backwards_with_threshold(x, y, threshold):
 
         # Tarea 2 punto 2 - Detener el algoritmo si, tras calcular una etapa
         # (fila o columna según sea tu algoritmo) se puede asegurar que el coste superará el umbral.
-        if min(M[:,j]) > threshold : return threshold + 1
+        if min(M[:,j]) > threshold : 
+            print('Aborto No promete')
+            return None
 
+    print(M)
     return M[len(x), len(y)]
 
 
