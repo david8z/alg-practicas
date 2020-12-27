@@ -6,7 +6,6 @@ sys.path.append('../')
 import tarea1.edit_distances as distances
 import tarea2.distances_with_threshold as distances_with_threshold
 
-from tarea3.trie import Trie
 
 # def hamming_distance(string1, string2):
 #     dist_counter = 0
