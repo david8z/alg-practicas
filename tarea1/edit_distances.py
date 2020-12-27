@@ -11,15 +11,15 @@ def matriz(x, y):
     return np.vstack([vy != letter for letter in x]) + 0
 
 def init_matriz(x, y):
-   """
-   Inicia la matriz para calculos con Damerau
-   """
-   matriz = np.ones((len(x) + 1, len(y) + 1)) * np.inf
+    """
+    Inicia la matriz para calculos con Damerau
+    """
+    matriz = np.ones((len(x) + 1, len(y) + 1)) * np.inf
 
-   matriz[0] = np.arange(len(y)+1)
-   matriz[:][:,0] = np.arange(len(x)+1)
+    matriz[0] = np.arange(len(y)+1)
+    matriz[:][:,0] = np.arange(len(x)+1)
 
-   return matriz
+    return matriz
 
 
 def dp_levenshtein_backwards(x, y):

@@ -92,7 +92,7 @@ class SpellSuggester:
 
                 # Condición 1
                 if lower > threshold:
-                    d = threshold + 1
+                    continue
                 else:
                     if distance == 'levenshtein':
                         d = distances_with_threshold.dp_levenshtein_backwards_threshold(term, word, threshold)
@@ -100,8 +100,8 @@ class SpellSuggester:
                         d = distances_with_threshold.dp_restricted_damerau_backwards_threshold(term, word, threshold)
                     if distance == 'intermediate':
                         d = distances_with_threshold.dp_intermediate_damerau_backwards_with_threshold(term, word, threshold)
-
-                results[word] = d
+                    if d <= threshold:
+                        results[word] = d
             else:
                 if distance == 'levenshtein':
                     d = distances.dp_levenshtein_backwards(term, word)
@@ -109,20 +109,8 @@ class SpellSuggester:
                     d = distances.dp_restricted_damerau_backwards(term, word)
                 if distance == 'intermediate':
                     d = distances.dp_intermediate_damerau_backwards(term, word)
+
                 results[word] = d
         return results
-
-class TrieSpellSuggester(SpellSuggester):
-    """
-    Clase que implementa el método suggest para la búsqueda de términos y añade el trie
-    """
-    def __init__(self, vocab_file_path):
-        super().__init__(vocab_file_path)
-        self.trie = Trie(self.vocabulary)
-
-if __name__ == "__main__":
-    spellsuggester = TrieSpellSuggester("./corpora/quijote.txt")
-    print(spellsuggester.suggest("alábese"))
-    # cuidado, la salida es enorme print(suggester.trie)
 
 

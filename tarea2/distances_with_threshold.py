@@ -62,7 +62,7 @@ def init_matriz(x, y):
 #                 if (res.diagonal() > threshold).any():
 #                     return None
 #     return res[len(term),len(ref)]
-    
+
 def dp_levenshtein_backwards_threshold(term, ref, threshold):
     """
     Calcula la distancia de Levenshtein entre las cadenas term y ref
@@ -73,17 +73,17 @@ def dp_levenshtein_backwards_threshold(term, ref, threshold):
 
     for i in range(1, len(term) + 1):
 
-        lower_y = max(1, i - threshold)
-        upper_y = min(len(ref) + 1, i + threshold)
+        lower_y = max(1, i - threshold) 
+        upper_y = min(len(ref), i + threshold)
 
-        for j in range(lower_y, upper_y):
+        for j in range(lower_y, upper_y + 1):
             res[i,j] =min(
                     mat[i-1,j-1] + res[i-1,j-1],
                     1 + res[i-1,j],
                     1 + res[i,j-1]
                 )
 
-            if min(res[:,j]) > threshold : return threshold + 1
+        if min(res[i,:]) > threshold : return threshold + 1
 
     return res[len(term),len(ref)]
 
@@ -101,9 +101,9 @@ def dp_restricted_damerau_backwards_threshold(term, ref, threshold):
     for i in range(1,len(term)+1):
 
         lower_y = max(1, i - threshold)
-        upper_y = min(len(ref) + 1, i + threshold)
+        upper_y = min(len(ref), i + threshold)
 
-        for j in range(lower_y, upper_y):
+        for j in range(lower_y, upper_y + 1):
             if i == 1 or j == 1:
                 res[i,j] = min(
                     mat[i-1,j-1] + res[i-1,j-1],
@@ -117,7 +117,7 @@ def dp_restricted_damerau_backwards_threshold(term, ref, threshold):
                     1 + res[i,j-1],
                     1 + res[i-2,j-2] + (mat[i-2,j-1] + mat[i-1,j-2]) * INF
                 )
-            if min(res[:,j]) > threshold : return threshold + 1
+        if min(res[i,:]) > threshold : return threshold + 1
 
     return res[len(term),len(ref)]
 
@@ -130,14 +130,13 @@ def dp_intermediate_damerau_backwards_with_threshold(x, y, threshold):
     M = init_matriz(x, y)
 
     for i in range(1, len(x) + 1):
-
         # Tarea 2 punto 1 - Establecer límites en el recorrido para que solamente
         # se calculen aquellas partes del grafo de dependencias que tengan sentido para dicho umbral.
         # Por ejemplo: zonas relativamente cercanas a la diagonal principal de la matriz.
         lower_y = max(1, i - threshold)
-        upper_y = min(len(y) + 1, i + threshold)
+        upper_y = min(len(y), i + threshold)
 
-        for j in range(lower_y, upper_y):
+        for j in range(lower_y, upper_y + 1):
 
             if x[i - 1] == y[j - 1]:
                 initActual = min(M[i-1, j] + 1, M[i, j-1] + 1, M[i-1][j-1])
@@ -155,7 +154,8 @@ def dp_intermediate_damerau_backwards_with_threshold(x, y, threshold):
 
         # Tarea 2 punto 2 - Detener el algoritmo si, tras calcular una etapa
         # (fila o columna según sea tu algoritmo) se puede asegurar que el coste superará el umbral.
-        if min(M[:,j]) > threshold : return threshold + 1
+        if min(M[i,:]) > threshold :
+            return threshold + 1
 
     return M[len(x), len(y)]
 
