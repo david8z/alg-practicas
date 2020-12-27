@@ -13,7 +13,7 @@ if __name__ == "__main__":
             threshold = int(matchline.group('threshold'))
             numresul = int(matchline.group('numresul'))
             resul = { g.group('term'):int(g.group('dist'))
-                      for g in entry.finditer(matchline.group('dict')) }
+                for g in entry.finditer(matchline.group('dict')) }
             assert(numresul == len(resul))
             # en este punto puedes llamar a suggest con termino,
             # threshold y comprobar que devuelve un diccionario

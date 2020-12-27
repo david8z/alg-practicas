@@ -61,22 +61,22 @@ class SpellSuggester:
         length = len(term)
         for word in self.vocabulary:
             if threshold is not None:
-                
+
                 lower = abs(length - len(word))
                 upper = max(length, len(word))
                 lower = 0 if term == term else lower
                 # No Hamming No Triangle inequality
                 if lower > threshold:
                     continue
-                
-                if upper < threshold: 
+
+                if upper < threshold:
                     if distance is 'levenshtein':
                         d = distances_with_threshold.dp_levenshtein_backwards_threshold(term, word, threshold)
-                    # TODO Resto de distancias
-                    
-                    
-                    if d <= threshold: # Compraracion tal vez innecesaria por los upper and lower bounds
-                        results[word] = d
+                    if distance is 'restricted':
+                        d = distances_with_threshold.dp_restricted_damerau_backwards_threshold(term, word, threshold)
+                    if distance is 'intermediate':
+                        d = distances_with_threshold.dp_intermediate_damerau_backwards_with_threshold(term, word, threshold)
+                    results[word] = d
             else:
                 if distance is 'levenshtein':
                     d = distances.dp_levenshtein_backwards(term, word)
@@ -94,10 +94,10 @@ class TrieSpellSuggester(SpellSuggester):
     def __init__(self, vocab_file_path):
         super().__init__(vocab_file_path)
         self.trie = Trie(self.vocabulary)
-    
+
 if __name__ == "__main__":
     spellsuggester = TrieSpellSuggester("./corpora/quijote.txt")
     print(spellsuggester.suggest("alábese"))
     # cuidado, la salida es enorme print(suggester.trie)
 
-    
+

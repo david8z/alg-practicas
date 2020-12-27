@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 #
 #  ALT_library.py
-#  
+#
 #  Copyright 2020: Profesores de Algorítmica (UPV, GII/ETSINF)
 
 import collections
@@ -26,16 +26,16 @@ class Trie:
         Raises:
             Exception: si el vocabulario no es una lista de cadenas ordenada lexicográficamente.
         """
-        
+
         if not (isinstance(vocabulary,list) and
                 all(isinstance(w, str) and len(w) > 0 for w in vocabulary) and
                 all(w1 < w2 for w1, w2 in zip(vocabulary, vocabulary[1:]))):
             raise Exception("vocabulario incorrecto")
 
-        self.vocabulary = vocabulary # nos quedamos una referencia, esto podría dar problemas
-                                     # si más adelante alguien cambia dicha lista, ¡cuidado!
-                                     # una alternativa sería hacer copia local pero ocupa más espacio
-                                     # si varios objetos van a compartir el vocabulario sin modificarlo
+        self.vocabulary = vocabulary    # nos quedamos una referencia, esto podría dar problemas
+                                        # si más adelante alguien cambia dicha lista, ¡cuidado!
+                                        # una alternativa sería hacer copia local pero ocupa más espacio
+                                        # si varios objetos van a compartir el vocabulario sin modificarlo
         self.build_trie() # construimos el Trie propiamente dicho
 
     def build_trie(self):
@@ -61,7 +61,7 @@ class Trie:
                 la forma de saber si un nodo i es final es comprobar que i es una clave de este
                 diccionario.
         """
-        
+
         label = []     # lista python, después self.label un array numpy
         firstchild = [] # lista python, después self.firstchild un array numpy
         parent = []     # lista python, después self.parent array numpy
@@ -69,7 +69,7 @@ class Trie:
         label.append(" ")   # asociado al nodo raíz
         firstchild.append(1) # asociado al nodo raíz
         parent.append(-1)   # asociado al nodo raíz
-        
+
         # esto básicamente hace un recorrido por niveles del Trie, de
         # ahí que utilice una cola:
         Q = collections.deque()
@@ -120,7 +120,7 @@ class Trie:
 
     def get_num_states(self):
         return len(self.firstchild)-1 # sentinel is not included
-    
+
     def get_label(self, node):
         return self.label[node]
 
@@ -138,13 +138,13 @@ class Trie:
 
     def get_output(self, node):
         return self.output.get(node,"")
-    
+
     def num_children(self, node):
         return self.firstchild[node + 1] - self.firstchild[node]
 
     def __str__(self):
         lines = ["vocabulary " + repr(self.vocabulary),
-                 "pos label parent firstchild nºchild output"]
+                "pos label parent firstchild nºchild output"]
         num_nodes = len(self.label)-1 # sentinel is not included
         for node in range(num_nodes):
             etiqueta = '"'+str(self.label[node])+'"'
