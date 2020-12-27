@@ -1,10 +1,19 @@
 # -*- coding: utf-8 -*-
 import re
+import sys
+sys.path.append('../')
 
 import tarea1.edit_distances as distances
 import tarea2.distances_with_threshold as distances_with_threshold
 
-from trie import Trie
+from tarea3.trie import Trie
+
+# def hamming_distance(string1, string2):
+#     dist_counter = 0
+# 	for n in range(len(string1)):
+# 		if string1[n] != string2[n]:
+# 			dist_counter += 1
+# 	return dist_counter
 
 class SpellSuggester:
 
@@ -60,29 +69,45 @@ class SpellSuggester:
         results = {} # diccionario termino:distancia
         length = len(term)
         for word in self.vocabulary:
-            if threshold is not None:
+            # 1. It is at least the difference of the sizes of the two strings.
+            # 2. It is at most the length of the longer string.
+            # 3. It is zero if and only if the strings are equal.
+            # 4. If the strings are the same size, the Hamming distance is an uppr bound on the Levenshtein distance.
+            # 5. The Levenshtein distance between two strings is no greater than the sum of their Levenshtein distances from a third string (triangle inequality).
+
+
+
+            # Condicion 3
+            if term == word:
+                # Si las palabras son iguales la distancia es 0
+                results[word] = 0
+
+            # Condicion 2 y 4 No usamos cotas pesimistas
+            # if len(term) == len(word):
+                #upper = min(max(length, len(word)), hamming_distance(term,word))
+
+            elif threshold is not None:
 
                 lower = abs(length - len(word))
-                upper = max(length, len(word))
-                lower = 0 if term == term else lower
-                # No Hamming No Triangle inequality
-                if lower > threshold:
-                    continue
 
-                if upper < threshold:
-                    if distance is 'levenshtein':
+                # Condición 1
+                if lower > threshold:
+                    d = threshold + 1
+                else:
+                    if distance == 'levenshtein':
                         d = distances_with_threshold.dp_levenshtein_backwards_threshold(term, word, threshold)
-                    if distance is 'restricted':
+                    if distance == 'restricted':
                         d = distances_with_threshold.dp_restricted_damerau_backwards_threshold(term, word, threshold)
-                    if distance is 'intermediate':
+                    if distance == 'intermediate':
                         d = distances_with_threshold.dp_intermediate_damerau_backwards_with_threshold(term, word, threshold)
-                    results[word] = d
+
+                results[word] = d
             else:
-                if distance is 'levenshtein':
+                if distance == 'levenshtein':
                     d = distances.dp_levenshtein_backwards(term, word)
-                if distance is 'restricted':
+                if distance == 'restricted':
                     d = distances.dp_restricted_damerau_backwards(term, word)
-                if distance is 'intermediate':
+                if distance == 'intermediate':
                     d = distances.dp_intermediate_damerau_backwards(term, word)
                 results[word] = d
         return results

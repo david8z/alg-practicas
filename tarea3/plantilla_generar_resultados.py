@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
+import sys
+sys.path.append('../')
+
+from tarea3.spellsuggest import SpellSuggester
 
 if __name__ == "__main__":
-    spellsuggester = SpellSuggester("./corpora/quijote.txt")
+    spellsuggester = SpellSuggester("quijote.txt")
     for distance in ['levenshtein','restricted','intermediate']:
         destiny =  f'result_{distance}_quijote.txt'
         with open(destiny, "w", encoding='utf-8') as fw:
