@@ -5,12 +5,12 @@ sys.path.append('../')
 
 from tarea4.trie import Trie
 
-from utils.utils import SpellSuggester
+from utils.utils import Suggester
 
 from tarea4.distances_with_trie import dp_levenshtein_backwards_threshold_trie, dp_restricted_damerau_backwards_threshold_trie
 
 
-class TrieSpellSuggester(SpellSuggester):
+class TrieSpellSuggester(Suggester):
     """
     Clase que implementa el método suggest para la búsqueda de términos y añade el trie
     """
@@ -26,7 +26,7 @@ class TrieSpellSuggester(SpellSuggester):
     def suggest(self, term, distance="levenshtein", threshold=None):
 
         assert distance in self.get_implemented_distances()
-        
+
         if distance == 'levenshtein':
             words = dp_levenshtein_backwards_threshold_trie(self.trie, term, threshold)
         if distance == 'restricted':

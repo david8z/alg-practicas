@@ -1,13 +1,13 @@
-import argparse 
+import argparse
 
 import sys
 sys.path.append('../')
 
-import pandas as pd 
+import pandas as pd
 
-from tqdm import tqdm 
+from tqdm import tqdm
 
-import nltk 
+import nltk
 print('Downloading required nltk files...')
 nltk.download(['stopwords','udhr'])
 print('--- done')
@@ -101,7 +101,7 @@ def main(args):
                     for rep in tqdm(range(0,args.repeat),total=args.repeat,leave=True,desc='Iteracion de repeticion: '):
 
                         start = time.time()
-                        
+
                         for consulta in tqdm(consultas,total=len(consultas),leave=True,desc='Consultas: '):
                             _ = iss.suggest(consulta,distance=alg,threshold=STATIC_THRESHOLD)
 
@@ -122,11 +122,11 @@ def main(args):
                 for alg in tss.get_implemented_distances():
 
                     print('\n Algoritmo: ',alg)
-    
+
                     for rep in tqdm(range(0,args.repeat),total=args.repeat,leave=True,desc='Iteracion de repeticion: '):
 
                         start = time.time()
-                        
+
                         for consulta in tqdm(consultas,total=len(consultas),leave=True,desc='Consultas: '):
                             _ = tss.suggest(consulta,distance=alg,threshold=STATIC_THRESHOLD)
 
@@ -153,7 +153,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--talla_dict",nargs='+', default=[100, 150],type=int)
