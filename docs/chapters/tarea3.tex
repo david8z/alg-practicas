@@ -1,6 +1,34 @@
 \section{Tarea 3 - Metodo Suggest}
 
-\subsection{TO BE CONTINUED}
-wertewrt
+Este método, iterativo, compara cada palabra con todas las del diccionario, ello conlleva un gran coste temporal.
+Para ello se pide implementar alguna cota optimista que nos permita saber que dicha distancia será
+mayor al umbral establecido.
+
+\subsection{Límites teóricos superior e inferior}
+La distancia de Levenshtein tiene varios límites superior e inferior simples. Éstas incluyen:
+\begin{enumerate}
+    \item Es al menos la diferencia de tamaños de las dos cuerdas.
+    \item Es como máximo la longitud de la cuerda más larga.
+    \item Es cero si y solo si las cadenas son iguales.
+    \item Si las cuerdas son del mismo tamaño, la distancia de Hamming es un límite superior en la distancia de Levenshtein. La distancia de Hamming es el número de posiciones en las que los símbolos correspondientes en las dos cadenas son diferentes.
+    \item La distancia entre dos cadenas Levenshtein no es mayor que la suma de sus distancias levenshtein de una tercera cadena (desigualdad triangular).
+\end{enumerate}
+
+\subsection{Implementación}
+
+\begin{lstlisting}[caption=Condición 1]
+if threshold is not None:
+    lower = abs(length - len(word))
+    if lower > threshold:
+        continue
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Condición 3]
+if term == word:
+    results[word] = 0
+\end{lstlisting}
+
+\subsection{Testing}
+Ejécutamos nuestros algoritmos de distancias con los mismos parámetros que el profesor y comparamos los resultados, cerciorandonos de que son iguales.
 
 \newpage 

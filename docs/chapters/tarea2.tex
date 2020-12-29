@@ -1,15 +1,25 @@
 \section{Distancias de edición con thresholds}
+En orden de optimizar el algoritmo se han implementado dos mejoras sobre los tres métodos de la tarea 1.
+\subsection{Calcular alrededor de la diagonal}
+Establecemos límites en el recorrido para que solamente se calculen aquellas partes del grafo de dependencias que tengan sentido para dicho umbral.
+Es decir, zonas relativamente cercanas a la diagonal principal de la matriz. En nuestro caso, lo realizamos por columnas sobre la matriz.
+        
 
-\begin{lstlisting}[label={list:second},caption=Sample Bash code.]
-#! /bin/bash
-python stage1.py
-echo "Stage I done!"
-python stage2.py
-echo "Stage II done!"
-python stage3.py
-echo "Stage III done!"
+\begin{lstlisting}[caption=Calculo de los umbrales]
+lower_y = max(1, i - threshold)
+upper_y = min(len(y), i + threshold)
 \end{lstlisting}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\subsection{Detener ejecución sino promete}
+Detenemos el algoritmo si, tras calcular una etapa en nuestro caso por columnas, se puede asegurar que el coste superará el umbral.
+
+\begin{lstlisting}[caption=Parar ejecución sino promete]
+if min(M[i,:]) > threshold :
+    return threshold + 1
+\end{lstlisting}
+
+
+\subsection{Testing}
+Al igual que en la tarea 1, en el código se encuentra una test flag, por defecto activada, para que a la hora de importar este módulo se compruebe que el comportamiento de los algortimos es el adecuado.
 
 \newpage

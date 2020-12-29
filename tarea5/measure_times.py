@@ -79,17 +79,17 @@ def main(args):
 
     results = []
 
-    for lang in tqdm(args.languages,total=len(args.languages),leave=True,desc='Language: '):
+    for lang in tqdm(args.languages,total=len(args.languages),leave=False,desc='Language: ',position=0):
         print('\n'+lang)
 
-        for t_d in tqdm(args.talla_dict,total=len(args.talla_dict),leave=True,desc='Talla del diccionario: '):
+        for t_d in tqdm(args.talla_dict,total=len(args.talla_dict),leave=False,desc='Talla del diccionario: ',position=1):
 
             word_set = get_word_set(lang,t_d)
             print('\n Talla del diccionario ',len(word_set))
             iss = IterSpellSuggester(word_set)
             tss = TrieSpellSuggester(word_set)
 
-            for t_c in tqdm(args.talla_consultas,total=len(args.talla_consultas),leave=True,desc='Talla de las consultas: '):
+            for t_c in tqdm(args.talla_consultas,total=len(args.talla_consultas),leave=False,desc='Talla de las consultas: ',position=2):
 
                 consultas = get_consultas(word_set,t_c)
 
@@ -98,11 +98,11 @@ def main(args):
 
                     print('\n Algoritmo: ',alg)
 
-                    for rep in tqdm(range(0,args.repeat),total=args.repeat,leave=True,desc='Iteracion de repeticion: '):
+                    for rep in tqdm(range(0,args.repeat),total=args.repeat,leave=False,desc='Iteracion de repeticion: ',position=3):
 
                         start = time.time()
                         
-                        for consulta in tqdm(consultas,total=len(consultas),leave=True,desc='Consultas: '):
+                        for consulta in tqdm(consultas,total=len(consultas),leave=False,desc='Consultas: ',position=4):
                             _ = iss.suggest(consulta,distance=alg,threshold=STATIC_THRESHOLD)
 
                         end = time.time()
@@ -123,11 +123,11 @@ def main(args):
 
                     print('\n Algoritmo: ',alg)
     
-                    for rep in tqdm(range(0,args.repeat),total=args.repeat,leave=True,desc='Iteracion de repeticion: '):
+                    for rep in tqdm(range(0,args.repeat),total=args.repeat,leave=False,desc='Iteracion de repeticion: ',position=3):
 
                         start = time.time()
                         
-                        for consulta in tqdm(consultas,total=len(consultas),leave=True,desc='Consultas: '):
+                        for consulta in tqdm(consultas,total=len(consultas),leave=False,desc='Consultas: ',position=4):
                             _ = tss.suggest(consulta,distance=alg,threshold=STATIC_THRESHOLD)
 
                         end = time.time()
@@ -156,13 +156,13 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--talla_dict",nargs='+', default=[100, 150],type=int)
-    parser.add_argument("--languages",nargs='+', default=['Spanish'],type=str,choices=['English','Spanish'])
+    parser.add_argument("--talla_dict",nargs='+', default=[1000,5000,10000],type=int)
+    parser.add_argument("--languages",nargs='+', default=['Spanish','English'],type=str,choices=['English','Spanish'])
     parser.add_argument("--algorithms",default=['all'],nargs='+',choices=[
         'all',
     ]) # No implementado, siempre con todos
-    parser.add_argument('--repeat',type=int,default=2)
-    parser.add_argument('--talla_consultas',nargs='+', default=[20,10],type=int)
+    parser.add_argument('--repeat',type=int,default=3)
+    parser.add_argument('--talla_consultas',nargs='+', default=[10,100,500,1000,5000,10000],type=int)
 
     args = parser.parse_args()
 
