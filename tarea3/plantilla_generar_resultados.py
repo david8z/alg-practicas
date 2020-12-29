@@ -7,8 +7,7 @@ from spell_suggest import SpellSuggester
 
 
 if __name__ == "__main__":
-
-    spellSuggester = SpellSuggester("quijote.txt")
+    spellSuggester = SpellSuggester("../corpus/quijote.txt")
     for distance in ['levenshtein','restricted','intermediate']:
         destiny =  f'result_{distance}_quijote.txt'
         with open(destiny, "w", encoding='utf-8') as fw:

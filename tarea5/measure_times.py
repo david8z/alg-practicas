@@ -12,7 +12,7 @@ print('Downloading required nltk files...')
 nltk.download(['stopwords','udhr'])
 print('--- done')
 
-from tarea3.spell_suggest import IterSpellSuggester
+from tarea3.spell_suggest import SpellSuggester
 from tarea4.trie_spell_suggest import TrieSpellSuggester
 
 import time
@@ -86,7 +86,7 @@ def main(args):
 
             word_set = get_word_set(lang,t_d)
             print('\n Talla del diccionario ',len(word_set))
-            iss = IterSpellSuggester(word_set)
+            iss = SpellSuggester(word_set)
             tss = TrieSpellSuggester(word_set)
 
             for t_c in tqdm(args.talla_consultas,total=len(args.talla_consultas),leave=True,desc='Talla de las consultas: '):

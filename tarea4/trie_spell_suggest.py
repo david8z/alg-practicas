@@ -47,20 +47,17 @@ class TrieSpellSuggester(Suggester):
 
 if __name__ == "__main__":
 
-    spellSuggesterTrie = TrieSpellSuggester("../tarea3/quijote.txt")
+    spellSuggesterTrie = TrieSpellSuggester("../corpus/quijote.txt")
     for distance in ['restricted',]: #['levenshtein','restricted','intermediate']
         destiny =  f'result_{distance}_quijote.txt'
         with open(destiny, "w", encoding='utf-8') as fw:
-            for palabra in ("casa", ):
+            for palabra in ("casa", "senor", "jabón", "constitución", "ancho", "savaedra", "vicios", "quixot", "s3afg4ew"):
                 for threshold in range(1, 6):
                     result = spellSuggesterTrie.suggest(palabra, distance, threshold)
-                    # print(str(i) + ': ' + str(len(result)))
-                    # print(result)
                     numresul = len(result)
                     print(str(threshold) + ': ' + str(numresul))
                     resul = " ".join(sorted(f'{int(v)}:{k}' for k,v in result.items()))
                     fw.write(f'{palabra}\t{threshold}\t{numresul}\t{resul}\n')
                     print("-------------")
-                    """ Devuelve uno más ya que incluye la cadena vacia."""
 
 
