@@ -7,7 +7,7 @@ from tarea4.trie import Trie
 
 from utils.utils import Suggester
 
-from tarea4.distances_with_trie import dp_levenshtein_backwards_threshold_trie, dp_restricted_damerau_backwards_threshold_trie
+from tarea4.distances_with_trie import dp_levenshtein_backwards_threshold_trie, dp_restricted_damerau_backwards_threshold_trie, dp_intermediate_damerau_backwards_threshold_trie
 
 
 class TrieSpellSuggester(Suggester):
@@ -18,7 +18,7 @@ class TrieSpellSuggester(Suggester):
     def __init__(self,vocab):
         super().__init__(vocab)
         self.trie = Trie(self.vocabulary)
-        self.IMPLEMENTED_DISTANCES = ['levenshtein','restricted']
+        self.IMPLEMENTED_DISTANCES = ['levenshtein','restricted', 'intermediate']
 
     def get_implemented_distances(self):
         return self.IMPLEMENTED_DISTANCES
@@ -29,12 +29,10 @@ class TrieSpellSuggester(Suggester):
 
         if distance == 'levenshtein':
             words = dp_levenshtein_backwards_threshold_trie(self.trie, term, threshold)
-        if distance == 'restricted':
+        elif distance == 'restricted':
             words = dp_restricted_damerau_backwards_threshold_trie(self.trie, term, threshold)
-        # if distance == 'intermediate':
-        #     d = distances_with_threshold.dp_intermediate_damerau_backwards_with_threshold(term, word, threshold)
-        # if d <= threshold:
-        #     results[word] = d
+        elif distance == 'intermediate':
+            words = dp_intermediate_damerau_backwards_threshold_trie(self.trie, term, threshold)
 
 
         result = {}
@@ -48,10 +46,10 @@ class TrieSpellSuggester(Suggester):
 if __name__ == "__main__":
 
     spellSuggesterTrie = TrieSpellSuggester("../corpus/quijote.txt")
-    for distance in ['restricted',]: #['levenshtein','restricted','intermediate']
+    for distance in ['intermediate',]: #['levenshtein','restricted','intermediate']
         destiny =  f'result_{distance}_quijote.txt'
         with open(destiny, "w", encoding='utf-8') as fw:
-            for palabra in ("casa", "senor", "jabón", "constitución", "ancho", "savaedra", "vicios", "quixot", "s3afg4ew"):
+            for palabra in ("casa",):# "senor", "jabón", "constitución", "ancho", "savaedra", "vicios", "quixot", "s3afg4ew"):
                 for threshold in range(1, 6):
                     result = spellSuggesterTrie.suggest(palabra, distance, threshold)
                     numresul = len(result)
