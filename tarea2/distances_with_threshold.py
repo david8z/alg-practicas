@@ -1,25 +1,8 @@
 import numpy as np
 
+from utils.utils import matriz, init_matriz
+
 TEST_MODULE_FLAG = True
-
-def matriz(term, ref):
-    """
-    Metodo de las transparencias
-    """
-    vref = np.array(list(ref))
-    return np.vstack([vref != letter for letter in term]) + 0
-
-def init_matriz(x, y):
-    """
-    Inicia la matriz para calculos con Damerau
-    """
-    M = np.ones((len(x) + 1, len(y) + 1)) * np.inf
-
-    M[0] = np.arange(len(y)+1)
-    M[:][:,0] = np.arange(len(x)+1)
-
-    return M
-
 
 # def levenshtein_active_states(ref,term,threshold):
 #     mat = matriz(term,ref)

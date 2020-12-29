@@ -1,26 +1,8 @@
 import numpy as np
 
+from utils.utils import matriz, init_matriz
+
 TEST_MODULE_FLAG = True
-
-def matriz(x, y):
-    """
-    Metodo dado en el boletin, matriz que contrasta dos palabras indicando con 0 si son
-    el mismo caracter o con 1 si son diferentes
-    """
-    vy = np.array(list(y))
-    return np.vstack([vy != letter for letter in x]) + 0
-
-def init_matriz(x, y):
-    """
-    Inicia la matriz para calculos con Damerau
-    """
-    matriz = np.ones((len(x) + 1, len(y) + 1)) * np.inf
-
-    matriz[0] = np.arange(len(y)+1)
-    matriz[:][:,0] = np.arange(len(x)+1)
-
-    return matriz
-
 
 def dp_levenshtein_backwards(x, y):
     """
@@ -99,9 +81,7 @@ def dp_intermediate_damerau_backwards(x, y):
     return M[len(x), len(y)]
 
 def general_damerau_levenshtein(x,y):
-   return 0 # reemplazar/completar
-
-    
+    """
    mat = init_matriz(x, y)
 
    last_row = {}
@@ -144,6 +124,8 @@ def general_damerau_levenshtein(x,y):
 
    # Return last element
    return mat[-1][-1]
+   """
+    return 0
 
 # TEST MODULE
 if TEST_MODULE_FLAG:

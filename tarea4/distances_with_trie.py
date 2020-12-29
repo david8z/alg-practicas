@@ -1,18 +1,8 @@
 import numpy as np
 
+from utils.utils import init_matriz_trie
+
 TEST_MODULE_FLAG = True
-
-def init_matriz(term_trie, y):
-    """
-    Inicia la matriz para calculos con Tries
-    """
-    M = np.ones((term_trie.get_num_states(), len(y) + 1)) * np.inf
-
-    M[0] = np.arange(len(y)+1)
-    for i in range(1, term_trie.get_num_states()):
-        M[i, 0] = M[term_trie.get_parent(i), 0] + 1
-
-    return M
 
 # Si al terminar una etapa el menor valor es >threshold se podría parar
 # - El nº filas antes era uno más la longitud de una cadena, ahora es el nº estados del Trie.
@@ -30,7 +20,7 @@ def dp_levenshtein_backwards_threshold_trie(term_trie, ref, threshold):
     """
 
     # Res: matriz estructura term_trie.get_num_states x len(ref) + 1
-    res = init_matriz(term_trie, ref)
+    res = init_matriz_trie(term_trie, ref)
 
     for i in range(0, term_trie.get_num_states()):
         # Si la distancia de el padre es mayor al threshold evitamos j iteraciones
@@ -56,7 +46,7 @@ def dp_restricted_damerau_backwards_threshold_trie(term_trie, ref, threshold):
     # Simula el infinito
     INF = term_trie.get_num_states()+ len(ref)
 
-    res = init_matriz(term_trie, ref)
+    res = init_matriz_trie(term_trie, ref)
 
 
     for i in range(0, term_trie.get_num_states()):
