@@ -5,15 +5,15 @@ sys.path.append('../')
 import tarea1.edit_distances as distances
 import tarea2.distances_with_threshold as distances_with_threshold
 
-from utils.utils import SpellSuggester
+from utils.utils import Suggester
 
 
-class IterSpellSuggester(SpellSuggester):
+class SpellSuggester(Suggester):
 
     """
     Clase que implementa el método suggest para la búsqueda de términos de manera iterativa.
     """
-    
+
     def __init__(self,vocab):
         super().__init__(vocab)
         self.IMPLEMENTED_DISTANCES = ["levenshtein", "restricted", "intermediate"]

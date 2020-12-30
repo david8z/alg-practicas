@@ -1,18 +1,18 @@
-import argparse 
+import argparse
 
 import sys
 sys.path.append('../')
 
-import pandas as pd 
+import pandas as pd
 
-from tqdm import tqdm 
+from tqdm import tqdm
 
-import nltk 
+import nltk
 print('Downloading required nltk files...')
 nltk.download(['stopwords','udhr'])
 print('--- done')
 
-from tarea3.spell_suggest import IterSpellSuggester
+from tarea3.spell_suggest import SpellSuggester
 from tarea4.trie_spell_suggest import TrieSpellSuggester
 
 import time
@@ -86,7 +86,7 @@ def main(args):
 
             word_set = get_word_set(lang,t_d)
             print('\n Talla del diccionario ',len(word_set))
-            iss = IterSpellSuggester(word_set)
+            iss = SpellSuggester(word_set)
             tss = TrieSpellSuggester(word_set)
 
             for t_c in tqdm(args.talla_consultas,total=len(args.talla_consultas),leave=False,desc='Talla de las consultas: ',position=2):
@@ -101,8 +101,8 @@ def main(args):
                     for rep in tqdm(range(0,args.repeat),total=args.repeat,leave=False,desc='Iteracion de repeticion: ',position=3):
 
                         start = time.time()
-                        
-                        for consulta in tqdm(consultas,total=len(consultas),leave=False,desc='Consultas: ',position=4):
+
+                        for consulta in tqdm(consultas,total=len(consultas),leave=True,desc='Consultas: '):
                             _ = iss.suggest(consulta,distance=alg,threshold=STATIC_THRESHOLD)
 
                         end = time.time()
@@ -122,12 +122,12 @@ def main(args):
                 for alg in tss.get_implemented_distances():
 
                     print('\n Algoritmo: ',alg)
-    
-                    for rep in tqdm(range(0,args.repeat),total=args.repeat,leave=False,desc='Iteracion de repeticion: ',position=3):
+
+                    for rep in tqdm(range(0,args.repeat),total=args.repeat,leave=True,desc='Iteracion de repeticion: '):
 
                         start = time.time()
-                        
-                        for consulta in tqdm(consultas,total=len(consultas),leave=False,desc='Consultas: ',position=4):
+
+                        for consulta in tqdm(consultas,total=len(consultas),leave=True,desc='Consultas: '):
                             _ = tss.suggest(consulta,distance=alg,threshold=STATIC_THRESHOLD)
 
                         end = time.time()
@@ -153,7 +153,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    
+
     parser = argparse.ArgumentParser()
 
     parser.add_argument("--talla_dict",nargs='+', default=[1000,5000,10000],type=int)

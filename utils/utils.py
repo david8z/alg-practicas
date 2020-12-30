@@ -43,7 +43,7 @@ def hamming_distance(x, y):
 
     return dist_counter
 
-class SpellSuggester:
+class Suggester:
 
     """
     Clase que implementa el método suggest para la búsqueda de términos.
@@ -81,19 +81,3 @@ class SpellSuggester:
             vocab = set(tokenizer.split(fr.read().lower()))
             vocab.discard('') # por si acaso
             return sorted(vocab)
-
-    def suggest(self, term, distance, threshold):
-
-        """Método para sugerir palabras similares siguiendo la tarea 3.
-
-        A completar.
-
-        Args:
-            term (str): término de búsqueda.
-            distance (str): algoritmo de búsqueda a utilizar
-                {"levenshtein", "restricted", "intermediate"}.
-            threshold (int): threshold para limitar la búsqueda
-                puede utilizarse con los algoritmos de distancia mejorada de la tarea 2
-                o filtrando la salida de las distancias de la tarea 2
-        """
-        pass

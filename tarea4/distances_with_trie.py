@@ -22,7 +22,7 @@ def dp_levenshtein_backwards_threshold_trie(term_trie, ref, threshold):
     # Res: matriz estructura term_trie.get_num_states x len(ref) + 1
     res = init_matriz_trie(term_trie, ref)
 
-    for i in range(0, term_trie.get_num_states()):
+    for i in range(1, term_trie.get_num_states()):
         # Si la distancia de el padre es mayor al threshold evitamos j iteraciones
         if min(res[term_trie.get_parent(i), :]) > threshold:
             continue
@@ -33,7 +33,7 @@ def dp_levenshtein_backwards_threshold_trie(term_trie, ref, threshold):
                     1 + res[term_trie.get_parent(i),j],
                     1 + res[i, j-1]
                 )
-    result = [(i, res[i, len(ref)]) for i in range(0, term_trie.get_num_states()) if term_trie.is_final(i) and res[i, len(ref)] <= threshold]
+    result = [(i, res[i, len(ref)]) for i in range(0, term_trie.get_num_states()) if  term_trie.is_final(i) and res[i, len(ref)] <= threshold]
     return result
 
 
@@ -49,24 +49,62 @@ def dp_restricted_damerau_backwards_threshold_trie(term_trie, ref, threshold):
     res = init_matriz_trie(term_trie, ref)
 
 
+
+    for i in range(1, term_trie.get_num_states()):
+        for j in range(1, len(ref) + 1):
+            if j == 1 or term_trie.get_parent(i) == term_trie.get_root():
+                res[i,j] = min(
+                        res[term_trie.get_parent(i),j-1] if term_trie.get_label(i) == ref[j-1] else 1 + res[term_trie.get_parent(i),j-1],
+                        1 + res[term_trie.get_parent(i),j],
+                        1 + res[i, j-1]
+                    )
+            else:
+                res[i,j] = min(
+                        res[term_trie.get_parent(i),j-1] if term_trie.get_label(i) == ref[j-1] else 1 + res[term_trie.get_parent(i),j-1],
+                        1 + res[term_trie.get_parent(i),j],
+                        1 + res[i, j-1],
+                        1 + res[term_trie.get_parent(term_trie.get_parent(i)),j-2] if  term_trie.get_label(term_trie.get_parent(i)) == ref[j-1] and term_trie.get_label(i) == ref[j-2] else INF
+                    )
+    result = [(i, res[i, len(ref)]) for i in range(0, term_trie.get_num_states()) if term_trie.is_final(i) and res[i, len(ref)] <= threshold]
+    return result
+
+def dp_intermediate_damerau_backwards_threshold_trie(term_trie, ref, threshold):
+    """
+    Calcula la distancia de Damerau Levenshtein Restringida entre las cadenas ref y term.
+    Únicamente añade la función de que si dos carácteres seguidos aparecen al reves estos supone coste 1 en vez de coste 2.
+    """
+    # Simula el infinito
+    INF = term_trie.get_num_states()+ len(ref)
+
+    res = init_matriz_trie(term_trie, ref)
+
+
+
     for i in range(0, term_trie.get_num_states()):
         for j in range(1, len(ref) + 1):
-            if term_trie.is_leaf(i):
-                continue
-            for child_st in term_trie.iter_children(i):
-                if j == 1:
-                    res[child_st, j] = min(
-                        res[i,j-1] if term_trie.get_label(child_st) == ref[j-1] else 1 + res[i,j-1],
-                        1 + res[i, j],
-                        1 + res[child_st, j-1]
+            init_actual = min(
+                        res[term_trie.get_parent(i),j-1] if term_trie.get_label(i) == ref[j-1] else 1 + res[term_trie.get_parent(i),j-1],
+                        1 + res[term_trie.get_parent(i),j],
+                        1 + res[i, j-1]
                     )
-                else:
-                    res[child_st, j] = min(
-                        res[i,j-1] if term_trie.get_label(child_st) == ref[j-1] else 1 + res[i,j-1],
-                        1 + res[i, j],
-                        1 + res[child_st, j-1],
-                        1 + res[term_trie.get_parent(i), j-2] if term_trie.get_label(term_trie.get_parent(i)) == ref[j-1] and term_trie.get_label(i) == ref[j-2] else INF
+
+            if j>1 and term_trie.get_parent(i) != term_trie.get_root() and term_trie.get_label(term_trie.get_parent(i)) == ref[j-1] and term_trie.get_label(i) == ref[j-2]:
+                res[i,j] = min(
+                        init_actual,
+                        1 + res[term_trie.get_parent(term_trie.get_parent(i)),j-2]
                     )
+            elif j > 2  and term_trie.get_parent(i) != term_trie.get_root() and term_trie.get_label(term_trie.get_parent(i)) == ref[j-1] and term_trie.get_label(i) == ref[j-3]:
+                res [i,j] = min(
+                        init_actual,
+                        2 + res[term_trie.get_parent(term_trie.get_parent(i)), j-3]
+                    )
+            elif term_trie.get_parent(i) != term_trie.get_root() and term_trie.get_parent(term_trie.get_parent(i)) != term_trie.get_root() and j > 1 and term_trie.get_label(term_trie.get_parent(term_trie.get_parent(i))) == ref[j-1] and term_trie.get_label(i) == ref[j-2]:
+                res [i,j] = min(
+                        init_actual,
+                        2 + res[term_trie.get_parent(term_trie.get_parent(term_trie.get_parent(i))), j-2]
+                    )
+            else:
+                res[i,j] = init_actual
     result = [(i, res[i, len(ref)]) for i in range(0, term_trie.get_num_states()) if term_trie.is_final(i) and res[i, len(ref)] <= threshold]
 
     return result

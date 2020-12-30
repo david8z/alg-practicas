@@ -5,12 +5,12 @@ sys.path.append('../')
 
 from tarea4.trie import Trie
 
-from utils.utils import SpellSuggester
+from utils.utils import Suggester
 
-from tarea4.distances_with_trie import dp_levenshtein_backwards_threshold_trie, dp_restricted_damerau_backwards_threshold_trie
+from tarea4.distances_with_trie import dp_levenshtein_backwards_threshold_trie, dp_restricted_damerau_backwards_threshold_trie, dp_intermediate_damerau_backwards_threshold_trie
 
 
-class TrieSpellSuggester(SpellSuggester):
+class TrieSpellSuggester(Suggester):
     """
     Clase que implementa el método suggest para la búsqueda de términos y añade el trie
     """
@@ -18,7 +18,7 @@ class TrieSpellSuggester(SpellSuggester):
     def __init__(self,vocab):
         super().__init__(vocab)
         self.trie = Trie(self.vocabulary)
-        self.IMPLEMENTED_DISTANCES = ['levenshtein','restricted']
+        self.IMPLEMENTED_DISTANCES = ['levenshtein','restricted', 'intermediate']
 
     def get_implemented_distances(self):
         return self.IMPLEMENTED_DISTANCES
@@ -26,15 +26,13 @@ class TrieSpellSuggester(SpellSuggester):
     def suggest(self, term, distance="levenshtein", threshold=None):
 
         assert distance in self.get_implemented_distances()
-        
+
         if distance == 'levenshtein':
             words = dp_levenshtein_backwards_threshold_trie(self.trie, term, threshold)
-        if distance == 'restricted':
+        elif distance == 'restricted':
             words = dp_restricted_damerau_backwards_threshold_trie(self.trie, term, threshold)
-        # if distance == 'intermediate':
-        #     d = distances_with_threshold.dp_intermediate_damerau_backwards_with_threshold(term, word, threshold)
-        # if d <= threshold:
-        #     results[word] = d
+        elif distance == 'intermediate':
+            words = dp_intermediate_damerau_backwards_threshold_trie(self.trie, term, threshold)
 
 
         result = {}
@@ -47,20 +45,17 @@ class TrieSpellSuggester(SpellSuggester):
 
 if __name__ == "__main__":
 
-    spellSuggesterTrie = TrieSpellSuggester("../tarea3/quijote.txt")
-    for distance in ['restricted',]: #['levenshtein','restricted','intermediate']
+    spellSuggesterTrie = TrieSpellSuggester("../corpus/quijote.txt")
+    for distance in ['intermediate',]: #['levenshtein','restricted','intermediate']
         destiny =  f'result_{distance}_quijote.txt'
         with open(destiny, "w", encoding='utf-8') as fw:
-            for palabra in ("casa", ):
+            for palabra in ("casa",):# "senor", "jabón", "constitución", "ancho", "savaedra", "vicios", "quixot", "s3afg4ew"):
                 for threshold in range(1, 6):
                     result = spellSuggesterTrie.suggest(palabra, distance, threshold)
-                    # print(str(i) + ': ' + str(len(result)))
-                    # print(result)
                     numresul = len(result)
                     print(str(threshold) + ': ' + str(numresul))
                     resul = " ".join(sorted(f'{int(v)}:{k}' for k,v in result.items()))
                     fw.write(f'{palabra}\t{threshold}\t{numresul}\t{resul}\n')
                     print("-------------")
-                    """ Devuelve uno más ya que incluye la cadena vacia."""
 
 
