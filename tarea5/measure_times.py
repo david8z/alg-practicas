@@ -156,13 +156,13 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
 
-    parser.add_argument("--talla_dict",nargs='+', default=[1000,5000,10000],type=int)
+    parser.add_argument("--talla_dict",nargs='+', default=[20,100,500,2500],type=int)
     parser.add_argument("--languages",nargs='+', default=['Spanish','English'],type=str,choices=['English','Spanish'])
     parser.add_argument("--algorithms",default=['all'],nargs='+',choices=[
         'all',
     ]) # No implementado, siempre con todos
     parser.add_argument('--repeat',type=int,default=3)
-    parser.add_argument('--talla_consultas',nargs='+', default=[10,100,500,1000,5000,10000],type=int)
+    parser.add_argument('--talla_consultas',nargs='+', default=[10,50,250,500,2500],type=int)
 
     args = parser.parse_args()
 
