@@ -10,6 +10,8 @@ reg = re.compile(r"(?P<term>\w+)\t(?P<threshold>\d+)\t(?P<numresul>\d+)\t(?P<dic
 entry = re.compile(r"(?P<dist>\d+):(?P<term>\w+)")
 
 def syntax():
+    #  distance si se quiere ejecutar una distancia en especifíco
+    # -nv si se quiere evitar la verbosidad útil a la hora de testear todo
     print("python %s [ distance ]  [ -nv | not verbose ]" % sys.argv[0])
     print(sys.argv)
     sys.exit()
@@ -20,15 +22,17 @@ if __name__ == "__main__":
 
     trieSpellSuggester = TrieSpellSuggester("../corpus/quijote.txt")
 
+    # Comprobamos que los parametros son correctos
     if len(sys.argv) >= 2 and sys.argv[1] not in trieSpellSuggester.get_implemented_distances() + ["-nv"]:
         print("DISTANCE NOT SUPPORTED IN TREE:")
         print(sys.argv[1] + " not in " + str(trieSpellSuggester.get_implemented_distances()))
         sys.exit()
 
-
     distances_list = [sys.argv[1], ] if len(sys.argv) != 1 and sys.argv[1] != "-nv" else trieSpellSuggester.get_implemented_distances()
     verbose = False if "-nv" in sys.argv else True
 
+    # Recorremos todas las distancias comprobando si el output gernerado por nuestro Suggester es igual al output
+    # del archivo de los resultados del profesor
     for distance in distances_list:
         if verbose:
             print("TRIE " + distance.upper())

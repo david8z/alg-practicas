@@ -14,6 +14,10 @@ def execute( tarea, distance):
 
 
 if __name__ == "__main__":
+    """
+        Encargado de hacer los test de las tareas 3 y 4 de forma concurrente si el funcionamiento es correcto se ejecuta
+        sin devolver nada.
+    """
     tareas = ["tarea3", "tarea4"]
     distancias = ["levenshtein", "restricted", "intermediate"]
 

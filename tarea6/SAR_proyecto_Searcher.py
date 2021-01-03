@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 ##################################################
 ##                                              ##
 ##            RECUPERADOR DE NOTICIAS           ##
@@ -12,25 +12,27 @@
 import pickle
 import sys
 sys.path.append('../')
-from tarea3.spell_suggest import SpellSuggester as suggester
+from tarea4.trie_spell_suggest import TrieSpellSuggester as suggester
 import itertools
+
+import argparse  
 
 def load_object(indexfile):
     with open(indexfile, 'rb') as fh:
         object = pickle.load(fh)
     return object
 
-def buscar_aproximados(index, term, distance, threshold):
+def buscar_aproximados(index, term, distancia, threshold):
     suggesterObject = suggester(list(index.keys()))
     return list(dict.fromkeys(
         itertools.chain.from_iterable(
-        [index[word] for word, _ in suggesterObject.suggest(term, 'levenshtein', 3).items() ]
+        [index[word] for word, _ in suggesterObject.suggest(term, distancia, threshold).items() ]
             )
         ))
 
-def solve_query(index, N, query, aproximada):
+def solve_query(index, N, query, aproximada, distancia, threshold):
     """
-      FUNCION NO ACEPTABLE PARA EL PROYECTO DE SAR !!!
+    FUNCION NO ACEPTABLE PARA EL PROYECTO DE SAR !!!
     """
 
     spt = query.split()
@@ -44,7 +46,7 @@ def solve_query(index, N, query, aproximada):
         l1 = index[term]
     except KeyError:
         # Buscamos un termino aproximado si 'aproximado == True'
-        l1 = buscar_aproximados(index, term, 'levenshtein', 2) if aproximada else  []
+        l1 = buscar_aproximados(index, term, distancia, threshold) if aproximada else  []
     if neg:
         l1 = sorted(set(range(N)).difference(l1))
     i += 1
@@ -58,7 +60,7 @@ def solve_query(index, N, query, aproximada):
             l2 = index[term]
         except KeyError:
             # Buscamos un termino aproximado si 'aproximado == True'
-            l2 = buscar_aproximados(index, term, 'levenshtein', 2) if aproximada else  []
+            l2 = buscar_aproximados(index, term, distancia, threshold) if aproximada else  []
         if neg:
             l2 = sorted(set(range(N)).difference(l2))
         l1 = solve_conn(conn, l1, l2)
@@ -80,29 +82,41 @@ def solve_conn(conn, l1, l2):
     return sorted(r)
 
 
-def solve_query_list( index, N, fname, aproximada):
-    with open(fname) as fh:
+def solve_query_list( index, N, fname, aproximada, distancia, threshold):
+    with open(fname,encoding='utf-8') as fh:
         ql = fh.read().split('\n')
     # He eliminado el -1 ya que o sino no ejecutaba la última query de la lista de palabras
     # for query in ql[:-1]:
     for query in ql[:]:
         if len(query) > 0:
-            r = solve_query(index, N, query.lower(), aproximada)
+            r = solve_query(index, N, query.lower(), aproximada, distancia, threshold)
             print("%s\t%d" % (query, len(r)))
 
 
 def syntax():
     # -a si se quiere activa la busqueda aproximada, vacío si no
-    print("python %s indexfile query_list busqueda_aproximada(-a)" % sys.argv[0])
+    print("python %s indexfile query_list [ distancia ] [threshold]" % sys.argv[0])
     print(sys.argv)
     sys.exit()
 
 
 if __name__ == "__main__":
-    if len(sys.argv) not in [3,4]:
-        syntax()
-    indexfile = sys.argv[1]
-    ql_file = sys.argv[2]
-    aproximada = sys.argv[3] == '-a' if len(sys.argv) == 4 else False
-    (index, nnews) = load_object(indexfile)
-    solve_query_list(index, nnews, ql_file, aproximada)
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("--index_file", default='indexfile_2015',type=str)
+    parser.add_argument("--ql_file", default='listapalabras.txt',type=str)
+    parser.add_argument("--aproximada", default=True, type=bool)
+    # Por defecto, levenshtein porque es el más rápido
+    parser.add_argument("--distancia",default='levenshtein',choices=['levenshtein','restricted','intermediate'])
+    parser.add_argument('--threshold',type=int, default=2)
+    parser.add_argument('--query',type=str, default="",nargs='+')
+    
+    args = parser.parse_args()
+
+    (index, nnews) = load_object("indexfiles/" + args.index_file)
+    if args.query:
+        print(len(solve_query(index, nnews, ' '.join(args.query).lower(), args.aproximada, args.distancia, args.threshold)))
+        sys.exit()
+
+    solve_query_list(index, nnews, args.ql_file, args.aproximada, args.distancia, args.threshold)
+

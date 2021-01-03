@@ -71,7 +71,7 @@ if __name__ == "__main__":
     t0 = time.time()
     index, nnews = index_dir(newsdir)
     t1 = time.time()
-    save_object((index, nnews), indexfile)
+    save_object((index, nnews), "indexfiles/" + indexfile)
     t2 = time.time()
     print()
     print("=" * 40)

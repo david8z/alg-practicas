@@ -1,0 +1,36 @@
+alexanderx 2 2 18 2 2 18 2 2 18
+iluminaciónx 8 8 22 8 8 23 8 8 23
+capitla 10 144 344 111 144 347 111 144 347
+secuelax 2 4 55 2 32 56 2 32 56
+asoman2 2 9 222 2 9 224 2 9 224
+virneg 0 146 605 0 146 608 0 146 608
+perwisos 6 34 210 6 36 255 6 36 255
+persimos 1 43 400 1 43 429 1 43 429
+limertad 58 58 231 58 58 233 58 58 233
+sagardo 0 42 563 7 50 573 7 50 573
+aperturaq 26 26 59 26 26 60 26 26 60
+loursed 0 3 36 0 3 36 0 3 36
+cuaqro 184 523 720 184 523 721 184 523 722
+planrta 50 120 770 50 120 770 50 120 770
+NOT antihéroes AND ecuador 11 11 11 11 11 11 11 11 11
+blindarse OR árboles AND perjuicio 0 0 0 0 0 0 0 0 0
+orígenes AND aversión 1 1 1 1 1 1 1 1 1
+actualmente AND NOT reubicar 73 73 73 73 73 73 73 73 73
+ventanasse OR rebuscar 2 2 2 2 2 2 2 2 2
+tortuosa OR atardecer 9 9 9 9 9 9 9 9 9
+NOT alexander AND iluminación 8 8 8 8 8 8 8 8 8
+capital OR secuela AND asoman 0 0 0 0 0 0 0 0 0
+virgen AND permisos 1 1 1 1 1 1 1 1 1
+libertad AND NOT sagrado 57 57 57 57 57 57 57 57 57
+apertura OR lourdes 27 27 27 27 27 27 27 27 27
+NOT antihreoes AND ecuadorr 11 11 29 11 11 34 11 11 34
+blindase OR árbolse AND perjuicioso 0 0 3 0 1 4 0 1 4
+diógenes AND avrasión 0 0 85 0 0 86 0 0 86
+actulamente AND NOT rubricar 0 74 73 74 74 75 74 74 75
+ventanasseu OR rebuscardo 1 2 46 1 2 46 1 2 46
+tortugosa OR atrasdecer 1 16 33 1 16 33 1 16 33
+NOT alexanders AND iluminaciónx 8 8 19 8 8 20 8 8 20
+capitla OR escuela 30 156 350 126 156 353 126 156 353
+wirgen AND perwisos 1 5 172 1 11 206 1 11 206
+libertad AND NOT sangrado 58 58 58 58 58 58 58 58 58
+aperturaq OR luordes 26 30 401 28 30 401 28 30 401

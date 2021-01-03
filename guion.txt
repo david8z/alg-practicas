@@ -1,0 +1,34 @@
+- Estructura de ficheros
+    - corpus tiene el quijote
+    - cada tarea su carpeta
+    - result_profesor son los resultados de las distancias del quijote del profesor
+    - utils funcionalidades que explicaremos más adelante
+    - al ser el proyecto incremental las tareas van heredando de tareas anteriores
+    - Todo está diseñado para ejecutarse desde el directorio donde está cada archivo, no desde el directorio raíz
+- tarea1
+    - Hemos implementado las 3 distancias
+    - Metodos para inicializar la matriz y obtener diferencias entre terminos en utils
+    - Cuando importas se ejecutra el test con los datos de las diapositivas y se comprueba que funciona de forma correcta
+- tarea2
+    - Creamos distancias con threshold y añadimos optimizaciones
+    - adaptamos todos los tests con threshold alto para que de el mismo resultado
+- tarea3
+    - spell suggest SpellSuggester hereda de Suggester en utils para no repetirnos en el trie y este.
+    - Implementamos la primera y tercera condición de las proporcionadas en el boletín ya que sólo se usan cotas optimistas
+    - Hemos ampliado el script de leer_resultados de forma automática testea todas las distancias aunque se puede especificar que distancia queremos comprobar con argumentos además se puede especificar que la ejecución sea no verbosa lo cual es útil para la funcion creada en utils/test_all.py en la que se testean de forma concurrente las distancias de las tareas 3 y 4 (mini demo)
+- tarea 4
+    - En distances_with_trie implementamos las 3 distancias utilizando métodos definidos en utils y siguiendo la estructura de la primera tarea.
+    - spell suggest SpellSuggester hereda de Suggester en utils para no repetirnos en el trie y este.
+    - hemos ampliado leer_resultados como en la tarea anterior
+- tarea 5
+    - distintos diccionarios, Español-inglés udhr, palabras mas frecuentes por talla
+    - creacion consultas y funcion perturba, con distintas tallas
+    - Datos apareados
+    - Repetir muestreos
+    - Datos estadisticamente significativos
+    - grafica - conclusiones
+- tarea 6
+    - hemos añadido carpeta indexfiles, tiene los indexfiles generados por el SAR_proyecto_Indexer.py,  test_results carpeta con los resultados de poliformat para hacer tests, tester.py que sirve para testear los resultados obtenidos en el que se testea que nuestros resultados sean iguales a los obtenidos en los rest_reslts de 2015 y 2015_01.
+    - En el indexer única modifcación los indexfiles se ponen en la carpeta especificada
+    - En el searcher (explciar parametros que se usan con demo)
+    - explicar por encima solve_query y buscar aproximados

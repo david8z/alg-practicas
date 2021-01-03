@@ -48,8 +48,6 @@ def dp_restricted_damerau_backwards_threshold_trie(term_trie, ref, threshold):
 
     res = init_matriz_trie(term_trie, ref)
 
-
-
     for i in range(1, term_trie.get_num_states()):
         for j in range(1, len(ref) + 1):
             if j == 1 or term_trie.get_parent(i) == term_trie.get_root():
@@ -77,8 +75,6 @@ def dp_intermediate_damerau_backwards_threshold_trie(term_trie, ref, threshold):
     INF = term_trie.get_num_states()+ len(ref)
 
     res = init_matriz_trie(term_trie, ref)
-
-
 
     for i in range(0, term_trie.get_num_states()):
         for j in range(1, len(ref) + 1):

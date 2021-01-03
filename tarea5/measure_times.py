@@ -38,7 +38,6 @@ def get_word_set(lang,talla):
     words = [w.lower() for w in words if not w in stop_words and w.isalpha()]
     fdist  = nltk.FreqDist(words)
     words = fdist.most_common(talla)
-    words = sorted([w for w,f in words]) # Necesario para el trie
     return words
 
 def perturbar(word):

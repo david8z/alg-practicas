@@ -4,6 +4,9 @@
 #LATEX
 docs/*
 !*.tex
+!*.pdf
+!docs/chapters/*
+!docs/images/*
 
 #ENV
 .vscode

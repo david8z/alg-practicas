@@ -62,7 +62,8 @@ class Suggester:
         if isinstance(vocab, str):
             self.vocabulary  = self.build_vocab(vocab, tokenizer=re.compile("\W+"))
         elif isinstance(vocab,list):
-            self.vocabulary = vocab
+            # Necesario para el trie
+            self.vocabulary = sorted([w for w in vocab])
         else:
             raise Exception("Vocab is wrong type")
 
