@@ -4,9 +4,9 @@ versiones de las anteriores son las más eficientes para unos datos concretos
 \subsection{Condideraciones}
 Utilizamos dos diccionarios (castellano e inglés) ambos contruidos mediante el texto de la declaración de derechos humanos.
 
-Sobre estos creamos múltiples diccionarios con las N([1000,5000,10000]) palabras más frecuentes. Para ello sobrecargamos el constructor de la clase Suggest de maneara que acepte un path al corpus y un set de palabras ya creado.
+Sobre estos creamos múltiples diccionarios con las N([20,100,500,2500]) palabras más frecuentes. Para ello sobrecargamos el constructor de la clase Suggest de maneara que acepte un path al corpus y un set de palabras ya creado.
 
-Sobre cada uno de estos se crean N consultas([10,100,500,1000,5000,10000]). Estas son palabras pertenecientes al deccionario sobre las que se realizan unas perturbaciones aleatorias.
+Sobre cada uno de estos se crean N consultas([10,50,250,500,2500]). Estas son palabras pertenecientes al diccionario sobre las que se realizan unas perturbaciones aleatorias.
 
 \begin{lstlisting}[caption=Función para crear perturbaciones aleatorias]
 def perturbar(word):
@@ -52,6 +52,19 @@ Repetimos 3 veces la medición de tiempo de cada algoritmo para cada talla de di
 
 \subsection{Resultados}
 
+Una vez ejecutado el programa y realizado la medición de tiempos observamos que los tiempos medidos en las diferentes repeticiones con los mismos datos son parecidos, para ello obtenemos la media y desviaciones estándar.
 
+Por ejemplo: para inglés, con talla de diccionario 20, talla de consultas 10 y el algoritmo Iterative intermediate obtenemos una media de 0.028734 y desviación estándard de 0.000572. Por lo que concluimos que los datos son válidos y procedemos a realizar la media de las diferentes repeticiones.
+
+Realizamos el mismo procedimiento para los dos idiomas, inglés y castellano, observamos que el tiempo medidio con los mismos parametros son parecidos. Por lo tanto concluimos que los diferentes algoritmos se comportan igual en ambos idiomas y procedemos a realizar la media de ambas mediciones.
+
+Finalmente, obtenemos para cada algoritmo una medición para cada talla de diccionario y talla de consulta.
+
+Los resultados obtenidos muestran que todos los algoritmos escalan de manera lineal con la talla de consulta y de diccionario, y que el algoritmo más rápidos es Trie Levenhtein, seguido de Trie restricted.
+
+\begin{figure}[h]
+\includegraphics[width=15cm, height=10cm]{images/grafico.png}
+\centering
+\end{figure}
 
 \newpage 
