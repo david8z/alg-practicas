@@ -1,11 +1,43 @@
 \section{Tarea 4 - Implementación mediante Tries}
+{\color{red}Realizado por David Alarcón, Víctor Callejas y José Mira}
+
 En esta parte, extendemos los algoritmos de cálculo de distancias que originalmente trabajan con pares de cadenas, para
 calcular la distancia entre una cadena y un trie
 \subsection{Implementacion}
-Yo tengo poca idea de esta parte
+En primer lugar hemos modifcado el metodo usado para inicializar la matriz ya que al tratrse de un trie el orden que este seguía no era igual al número de la columna en el que se encontraba por lo que había que recorrer todos los estados añadiendo su valor inicial a la matriz.
+
+\begin{lstlisting}[caption=Método init{\_}matriz{\_}trie en \emph{/utils/utils.py}]
+def init_matriz_trie(term_trie, y):
+    """
+    Inicia la matriz para calculos con Tries
+    """
+    M = np.ones((term_trie.get_num_states(), len(y) + 1)) * np.inf
+
+    M[0] = np.arange(len(y)+1)
+    for i in range(1, term_trie.get_num_states()):
+        M[i, 0] = M[term_trie.get_parent(i), 0] + 1
+
+    return M
+\end{lstlisting}
+
+Internamente en las distancias nos hemos basado en reescribir las distancias de la tarea 4 usando la lógica del Trie.
+\begin{itemize}
+  \item Para recoger todos los estados usamos \emph{term\_trie.get\_num\_states()}
+  \item Para acceder al elemento \emph{i-1} accedemos a \emph{term\_trie.get\_parent(i)}
+  \item Para verificar que es un estado final usamos \emph{term\_trie.is\_final(i)}
+\end{itemize}
+
+Además en la distancia de leveshtein hemos añadido una optimización en la que si el valor del padre supera el threshold continuamos la ejecuciaón evitando ejecutar j iteraciones.
+\begin{lstlisting}[caption=Optimización levenshtein tipo trie]
+if min(res[term_trie.get_parent(i), :]) > threshold:
+    continue
+\end{lstlisting}
+
 
 \subsection{Testing}
-Al igual que en la tarea 3, ejécutamos nuestros algoritmos de distancias, esta vez implementados mediante la esdtructura de datos Trie, con los mismos parámetros y comparamos los resultados, cerciorandonos de que son iguales que los de la tarea 3 y los del profesor.
+{\color{red}Realizado por David Alarcón}
+
+Al igual que en la tarea 3, hemos modiciado el archivo leer{\_}resultados.py con el objetivo de comprobar que verificar que los resultados obtenidos sean los mismos que los del profesor. A la hora de testear se siguen los mismo patrones que en la tarea 3
 
 
-\newpage 
+\newpage

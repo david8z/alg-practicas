@@ -1,6 +1,52 @@
-\section{Tarea 6 - Implementación proyecto SAR}
+\section{Tarea 6 - Integración proyecto SAR}
+{\color{red}Realizado por David Alarcón, Víctor Callejas y José Mira}
 
-\subsection{TO BE CONTINUED}
-wqrteqwe
+\subsection{Implementación}
+Hemos creado un método al cual se le pasa el índice de noticias, un término, una distancia y un threshold. Este método devuelve la lista de indices de noticias en el que aparecen los términos que cumplen las condiciones de distancia especificadas, en base al termindo de búsqueda.
 
-\newpage 
+\begin{lstlisting}[caption=Método buscar índices de noticias con palabras aproximadas]
+def buscar_aproximados(index, term, distancia, threshold):
+    suggesterObject = suggester(list(index.keys()))
+    return list(dict.fromkeys(
+        itertools.chain.from_iterable(
+        [index[word] for word, _ in suggesterObject.suggest(term, distancia, threshold).items() ]
+            )
+        ))
+\end{lstlisting}
+
+Para que esto funcione con nuestro searcher hemos añadido un try catch a la hora de acceder al índice de una palabra si se produce un KeyError esto significa que el término no está en el índice por lo que hemos de recurrir a sus terminos sugeridos en base a la distancia especificada.
+
+\begin{lstlisting}[caption=Método buscar índices de noticias con palabras aproximadas]
+try:
+    l1 = index[term]
+except KeyError:
+    l1 = buscar_aproximados(index, term, distancia, threshold) if aproximada else  []
+\end{lstlisting}
+
+El funcionamiento de nuestro suggester puede variar dependiendo de los parámetros que se le pasen a este.
+\begin{itemize}
+    \item \emph{--index{\_}file} El index file a usar.
+    \item \emph{--ql{\_}file} El nombre del arcivo que contiene la lista de queries que queremos ejecutar.
+    \item \emph{--distancia} La distancia que se quiere usar por defecto se usa levenshtein ya que es con la que mejor resultados hemos obtenido en la tarea 5.
+    \item \emph{--threshold} El threhold que se desea usar.
+    \item \emph{--query} La query que se le desea pasar al buscador en caso de que se prediera pasar una query en vez de un archivo de queries.
+\end{itemize}
+
+Todas las distancias de nuestro buscador se ejecutan con la configuración de tipo Trie ya que han sido las que mejor resultados nos han dado en la tarea5.
+
+\newpage
+
+\subsection{Testing}
+{\color{red}Realizado por David Alarcón}
+
+Se incluye un archivo tester.py el cual contrasta los resultados obtenidos por nuestro searcher con los resultados referncia de poliformat.
+
+Para ejecutar los test desde el directorio tarea 6 ejecutamos:
+
+\begin{lstlisting}[language=bash]
+    $ python tester.py
+\end{lstlisting}
+
+Si este no printea nada por consola indica que ha ejecutado todos los tests de forma correcta.
+
+\newpage

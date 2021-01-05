@@ -26,7 +26,7 @@ def dp_levenshtein_backwards(x, y):
 def dp_restricted_damerau_backwards(x, y):
     """
     Calcula la distancia de Damerau Levenshtein Restringida entre las cadenas x e y.
-    Únicamente añade la función de que si dos carácteres seguidos aparecen al reves estos supone coste 1 en vez de coste 2.
+    Únicamente añade la función de trasposición de caracteres con coste 1.
     """
     # Simula el infinito
     INF = len(x) + len(y)

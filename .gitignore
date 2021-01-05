@@ -5,8 +5,8 @@
 docs/*
 !*.tex
 !*.pdf
-!docs/chapters/*
-!docs/images/*
+!docs/chapters
+!docs/images
 
 #ENV
 .vscode
@@ -24,7 +24,7 @@ env/
 *.fot
 *.cb
 *.cb2
-.*.lb
+*.lb
 
 ## Intermediate documents:
 *.dvi

@@ -1,8 +1,10 @@
 \section{Tarea 2 - Distancias de edición con thresholds}
-En orden de optimizar el algoritmo se han implementado dos mejoras sobre los tres métodos de la tarea 1.
+{\color{red}Realizado por David Alarcón, Víctor Callejas y José Mira}
+
+Para optimizar el algoritmo se han implementado dos mejoras sobre los tres métodos de la tarea 1.
 \subsection{Calcular alrededor de la diagonal}
 Establecemos límites en el recorrido para que solamente se calculen aquellas partes del grafo de dependencias que tengan sentido para dicho umbral.
-Es decir, zonas relativamente cercanas a la diagonal principal de la matriz. En nuestro caso, lo realizamos por columnas sobre la matriz.
+Es decir, zonas relativamente cercanas a la diagonal principal de la matriz. En nuestro caso, recorremos la matriz por filas.
         
 
 \begin{lstlisting}[caption=Calculo de los umbrales]
@@ -11,7 +13,7 @@ upper_y = min(len(y), i + threshold)
 \end{lstlisting}
 
 \subsection{Detener ejecución sino promete}
-Detenemos el algoritmo si, tras calcular una etapa en nuestro caso por columnas, se puede asegurar que el coste superará el umbral.
+Detenemos el algoritmo si, tras calcular una etapa en nuestro caso por filas, se puede asegurar que el coste superará el umbral.
 
 \begin{lstlisting}[caption=Parar ejecución sino promete]
 if min(M[i,:]) > threshold :
@@ -20,6 +22,8 @@ if min(M[i,:]) > threshold :
 
 
 \subsection{Testing}
-Al igual que en la tarea 1, en el código se encuentra una test flag, por defecto activada, para que a la hora de importar este módulo se compruebe que el comportamiento de los algortimos es el adecuado.
+
+
+Al igual que en la tarea 1, en el código se encuentra una test flag, por defecto activada, para que a la hora de importar este módulo se compruebe que el comportamiento de los algortimos es el adecuado, sino mostratá los test case en los que falla.
 
 \newpage

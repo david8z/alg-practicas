@@ -1,7 +1,8 @@
 \section{Tarea 3 - Metodo Suggest}
+{\color{red}Realizado por David Alarcón, Víctor Callejas y José Mira}
 
-Este método, iterativo, compara cada palabra con todas las del diccionario, ello conlleva un gran coste temporal.
-Para ello se pide implementar alguna cota optimista que nos permita saber que dicha distancia será
+Este método, se compara cada palabra con todas las del diccionario, ello conlleva un gran coste temporal.
+Por ello se pide implementar alguna cota optimista que nos permita saber cuando una distancia será
 mayor al umbral establecido.
 
 \subsection{Límites teóricos superior e inferior}
@@ -14,7 +15,12 @@ La distancia de Levenshtein tiene varios límites superior e inferior simples. �
     \item La distancia entre dos cadenas Levenshtein no es mayor que la suma de sus distancias levenshtein de una tercera cadena (desigualdad triangular).
 \end{enumerate}
 
+
 \subsection{Implementación}
+
+Nosotros hemos decidido implementar las condiciones 1 y 3.
+Las condiciones 2 y 4, no las hemos implementado ya que estás no son cotas optimistas.
+La condición 5 tampoco, ya que conlleva un sobrecoste en el cálculo de la distancia con la tercera palabra.
 
 \begin{lstlisting}[caption=Condición 1]
 if threshold is not None:
@@ -29,6 +35,16 @@ if term == word:
 \end{lstlisting}
 
 \subsection{Testing}
-Ejécutamos nuestros algoritmos de distancias con los mismos parámetros que el profesor y comparamos los resultados, cerciorandonos de que son iguales.
+{\color{red}Realizado por David Alarcón}
+
+Hemos modificado el archivo de leer{\_}resultados.py lo que nos permite comparar los resultados proporcionados por el profesor con los resultados obtenidos por nuestro suggester.
+\newpage
+Para ejecutar los test desde el directorio tarea 3 ejecutamos:
+
+\begin{lstlisting}[language=bash]
+    $ python leer_resultados.py
+\end{lstlisting}
+
+Además se permite especificar por parametros la distancia a usar \emph{levenshtein}, \emph{restricted} o \emph{intermediate} y si queremos que sea no verbos \emph{-nv}.
 
 \newpage 
